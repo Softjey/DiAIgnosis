@@ -6,12 +6,12 @@ import {
   createBrowserRouter as createRouter,
 } from "react-router-dom";
 import "./index.css";
-import App from "./App";
+import StartPage from "./pages/StartPage";
 
 const router = createRouter([
   {
     path: "",
-    element: <App />,
+    element: <StartPage />,
   },
 ]);
 

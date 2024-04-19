@@ -1,7 +1,7 @@
-import './App.css'
+import '../App.css'
 import { Button } from '@nextui-org/button'
 
-function App() {
+function StartPage() {
 
   return (
     <>
@@ -10,4 +10,4 @@ function App() {
   )
 }
 
-export default App
+export default StartPage
