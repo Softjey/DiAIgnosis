@@ -67,9 +67,19 @@ export class ConsultationService {
       response_format: { type: 'json_object' },
     });
 
-    const { questions } = JSON.parse(response);
+    const { questions, end } = JSON.parse(response);
 
-    return questions as string[];
+    if (end) {
+      return {
+        status: 'ended',
+        questions: null,
+      };
+    }
+
+    return {
+      status: 'continuing',
+      questions: questions as string[],
+    };
   }
 
   async start(patientComplaint: string) {
@@ -110,11 +120,19 @@ export class ConsultationService {
       consultation.questions.get(questionId).answer = answer;
     });
 
-    const extraQuestionsText = await this.generateExtraQuestions(consultation);
-    const questions = this.mapToQuestion(extraQuestionsText);
+    const { questions: textQuestions, status } = await this.generateExtraQuestions(consultation);
+
+    if (status === 'ended') {
+      return {
+        status,
+        questions: null,
+      };
+    }
+
+    const questions = this.mapToQuestion(textQuestions);
 
     return {
-      status: '...',
+      status,
       questions: this.prepareForClient(questions),
     };
   }
