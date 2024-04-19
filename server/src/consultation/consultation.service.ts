@@ -6,54 +6,64 @@ import { AnswerDto } from './dtos/answer.dto';
 import { OpenAiService } from 'src/openai/openai.service';
 import { generateStartQuestionsPrompt } from './prompts/generate-start-questions';
 import { Consultation } from './interfaces/consultation.interface';
-import { generateAdditionalQuestionsPrompt } from './prompts/generate-additional-questions';
+import { generateExtraQuestionsPrompt } from './prompts/generate-extra-questions';
+import { Question } from './interfaces/question.interface';
+import { ChatCompletionCreateParamsBase } from 'openai/resources/chat/completions';
 
 @Injectable()
 export class ConsultationService {
-  private startPrompt = this.openAiService.systemPrompt(
-    generateStartQuestionsPrompt,
-  );
-  private continuePrompt = this.openAiService.systemPrompt(
-    generateAdditionalQuestionsPrompt,
-  );
+  private gptModel: ChatCompletionCreateParamsBase['model'] = 'gpt-3.5-turbo-0125';
+  private startPrompt = this.openAiService.systemPrompt(generateStartQuestionsPrompt);
+  private continuePrompt = this.openAiService.systemPrompt(generateExtraQuestionsPrompt);
 
   constructor(private readonly openAiService: OpenAiService) {}
 
+  private prepareForClient(questions: Question[]) {
+    return questions.map(({ id, text }) => ({ id, text }));
+  }
+
+  private mapToQuestion(questions: string[]): Question[] {
+    return questions.map((question) => ({
+      id: uuid(),
+      text: question,
+      answer: null,
+    }));
+  }
+
   private async generateQuestions(patientComplaint: string) {
     const response = await this.openAiService.chatGptRequest({
-      messages: [
-        ...this.startPrompt,
-        { role: 'user', content: patientComplaint },
-      ],
-      model: 'gpt-3.5-turbo-1106',
+      messages: [...this.startPrompt, { role: 'user', content: patientComplaint }],
+      model: this.gptModel,
       response_format: { type: 'json_object' },
     });
 
-    const { questions } = JSON.parse(response);
+    const { questions, error } = JSON.parse(response);
 
-    console.log('questions', questions);
-
-    if (questions[0] === 'BAD_REQUEST') {
+    if (error) {
       throw new BadRequestException(
         'Please provide a clear health complaint so that I can assist you effectively.',
       );
     }
 
+    console.log('questions', questions);
+
     return questions as string[];
   }
 
-  private async generateAdditionalQuestions(consultation: Consultation) {
+  private async generateExtraQuestions(consultation: Consultation) {
     const questionsValues = Array.from(consultation.questions.values());
     const messages = questionsValues
       .map(({ text, answer }) => [
-        { role: 'assistant' as const, content: text },
-        { role: 'user' as const, content: answer },
+        {
+          role: 'user' as const,
+          content: `Question: ${text} Answer: ${answer}`,
+        },
       ])
       .flat();
 
     const response = await this.openAiService.chatGptRequest({
       messages: [...this.startPrompt, ...messages, ...this.continuePrompt],
-      model: 'gpt-3.5-turbo-1106',
+      model: this.gptModel,
       response_format: { type: 'json_object' },
     });
 
@@ -64,41 +74,48 @@ export class ConsultationService {
 
   async start(patientComplaint: string) {
     const consultationId = uuid();
-    const questions = await this.generateQuestions(patientComplaint);
+    const questionsText = await this.generateQuestions(patientComplaint);
+    const questions = this.mapToQuestion(questionsText);
 
     consultationStorage.set(consultationId, {
-      questions: new Map(
-        questions.map((questionText) => {
-          const id = uuid();
-
-          return [id, { id, text: questionText, answer: null }];
-        }),
-      ),
+      questions: new Map(questions.map((question) => [question.id, question])),
     });
 
     return {
       consultationId,
-      questions,
+      questions: this.prepareForClient(questions),
     };
   }
 
-  async answer({ consultationId, answer, questionId }: AnswerDto) {
+  async answer({ consultationId, answers }: AnswerDto) {
     const consultation = consultationStorage.get(consultationId);
 
     if (!consultation) {
       throw new NotFoundException('Consultation not found');
     }
 
-    if (!consultation.questions.has(questionId)) {
-      throw new NotFoundException('Question not found');
+    const unansweredQuestions = Array.from(consultation.questions.values()).filter(
+      ({ answer }) => !answer,
+    );
+
+    if (answers.length !== unansweredQuestions.length) {
+      throw new BadRequestException('Invalid number of answers');
     }
 
-    consultation.questions.get(questionId).answer = answer;
+    answers.forEach(({ questionId, answer }) => {
+      if (!consultation.questions.has(questionId)) {
+        throw new NotFoundException(`Question with id ${questionId} not found`);
+      }
 
-    const extraQuestions = await this.generateAdditionalQuestions(consultation);
+      consultation.questions.get(questionId).answer = answer;
+    });
+
+    const extraQuestionsText = await this.generateExtraQuestions(consultation);
+    const questions = this.mapToQuestion(extraQuestionsText);
 
     return {
-      extraQuestions,
+      status: '...',
+      questions: this.prepareForClient(questions),
     };
   }
 }

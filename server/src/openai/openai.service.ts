@@ -16,9 +16,7 @@ export class OpenAiService {
   async chatGptRequest(options: ChatCompletionCreateParamsNonStreaming) {
     const completion = await this.openai.chat.completions.create(options);
 
-    const [content] = completion.choices.map(
-      (choice) => choice.message.content,
-    );
+    const [content] = completion.choices.map((choice) => choice.message.content);
 
     return content;
   }
