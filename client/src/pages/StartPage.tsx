@@ -1,13 +1,21 @@
-import '../App.css'
-import { Button } from '@nextui-org/button'
+import { Button } from "@nextui-org/react";
+import "../App.css";
+import { useNavigate } from "react-router-dom";
 
 function StartPage() {
-
+  const navigate = useNavigate();
   return (
     <>
-      <Button variant='flat' size='lg' color='warning'>Start Hackathon</Button>
+      <Button
+        onClick={() => navigate("/login")}
+        color="primary"
+        size="lg"
+        variant="flat"
+      >
+        Start
+      </Button>
     </>
-  )
+  );
 }
 
-export default StartPage
+export default StartPage;

@@ -7,11 +7,21 @@ import {
 } from "react-router-dom";
 import "./index.css";
 import StartPage from "./pages/StartPage";
+import LoginPage from "./pages/LoginPage";
+import MainPage from "./pages/MainPage";
 
 const router = createRouter([
   {
     path: "",
     element: <StartPage />,
+  },
+  {
+    path: "login",
+    element: <LoginPage />,
+  },
+  {
+    path: "main",
+    element: <MainPage />,
   },
 ]);
 

@@ -12,7 +12,17 @@ export default {
   },
   darkMode: "class",
   plugins: [nextui({
-    defaultTheme: 'dark',
+    defaultTheme: 'light',
+    themes: {
+      light: {
+        colors: {
+          primary: {
+            DEFAULT: "#45D483",
+            foreground: "#fff",
+          },
+          focus: "#000"
+        },
+      },
+    },
   })],
 }
-
