@@ -4,13 +4,17 @@ import { v4 as uuid } from 'uuid';
 import consultationStorage from './consultation.storage';
 import { AnswerDto } from './dtos/answer.dto';
 import { OpenAiService } from 'src/openai/openai.service';
-import { generateQuestionsPrompt } from './prompts/generate-questions';
+import { generateStartQuestionsPrompt } from './prompts/generate-start-questions';
 import { Consultation } from './interfaces/consultation.interface';
+import { generateAdditionalQuestionsPrompt } from './prompts/generate-additional-questions';
 
 @Injectable()
 export class ConsultationService {
   private startPrompt = this.openAiService.systemPrompt(
-    generateQuestionsPrompt,
+    generateStartQuestionsPrompt,
+  );
+  private continuePrompt = this.openAiService.systemPrompt(
+    generateAdditionalQuestionsPrompt,
   );
 
   constructor(private readonly openAiService: OpenAiService) {}
@@ -39,19 +43,23 @@ export class ConsultationService {
   }
 
   private async generateAdditionalQuestions(consultation: Consultation) {
-    const messages = Array.from(consultation.questions.values()).map(({ text, answer }) => ({
-        
-    });
+    const questionsValues = Array.from(consultation.questions.values());
+    const messages = questionsValues
+      .map(({ text, answer }) => [
+        { role: 'assistant' as const, content: text },
+        { role: 'user' as const, content: answer },
+      ])
+      .flat();
 
     const response = await this.openAiService.chatGptRequest({
-      messages: [
-        ...this.startPrompt,
-        
-        ...messages)
-      ],
+      messages: [...this.startPrompt, ...messages, ...this.continuePrompt],
       model: 'gpt-3.5-turbo-1106',
       response_format: { type: 'json_object' },
     });
+
+    const { questions } = JSON.parse(response);
+
+    return questions as string[];
   }
 
   async start(patientComplaint: string) {
@@ -87,11 +95,10 @@ export class ConsultationService {
 
     consultation.questions.get(questionId).answer = answer;
 
-    const additionalQuestions =
-      await this.generateAdditionalQuestions(consultation);
+    const extraQuestions = await this.generateAdditionalQuestions(consultation);
 
     return {
-      additionalQuestions: [],
+      extraQuestions,
     };
   }
 }
