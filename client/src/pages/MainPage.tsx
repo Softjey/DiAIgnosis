@@ -8,7 +8,7 @@ import {
 } from "@nextui-org/react";
 import Header from "../components/Header";
 import { useState } from "react";
-import { Question, loadInitQuestion } from "../api/api";
+import { Answer, Question, loadInitQuestion, sendAnswer } from "../api/api";
 
 const SendButton: React.FC<ButtonProps> = (props) => {
   return (
@@ -42,8 +42,10 @@ const MicrophoneButton: React.FC<ButtonProps> = (props) => {
 };
 
 const MainPage: React.FC = () => {
-  const [textAnswer, setTextAnswer] = useState("");
+  const [inputValue, setInputValue] = useState("");
   const [questions, setQuestions] = useState<Question[] | null>(null);
+  const [currQuestionIndex, setCurrQuestionIndex] = useState(0);
+  const [answers, setAnswers] = useState<Answer[]>([]);
 
   return (
     <div className="flex flex-col max-w-[60vw]">
@@ -68,7 +70,7 @@ const MainPage: React.FC = () => {
               style={{ fontSize: "clamp(1.25rem, 5vw, 1.875rem)" }}
               className="text-center text-black"
             >
-              {questions[0].text}
+              {questions[currQuestionIndex].text}
             </p>
           </CardBody>
         </Card>
@@ -76,18 +78,31 @@ const MainPage: React.FC = () => {
 
       <div className="flex justify-center items-end gap-3">
         <Textarea
-          onChange={(e) => setTextAnswer(e.currentTarget.value)}
+          onChange={(e) => setInputValue(e.currentTarget.value)}
           placeholder="Try to be more precise"
           minRows={1}
-          value={textAnswer}
+          value={inputValue}
         />
         <MicrophoneButton />
         <SendButton
           onClick={async () => {
-            const response = await loadInitQuestion(textAnswer);
-            console.log(response);
-            setQuestions(response.questions);
-            setTextAnswer("");
+            if (questions === null) {
+              const response = await loadInitQuestion(inputValue);
+              setQuestions(response.questions);
+
+              console.log(response);
+            } else {
+              setCurrQuestionIndex((prev) => prev + 1);
+              setAnswers([
+                ...answers,
+                {
+                  answer: inputValue,
+                  questionId: questions[currQuestionIndex].id,
+                },
+              ]);
+            }
+
+            setInputValue("");
           }}
         />
       </div>

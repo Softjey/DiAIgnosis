@@ -9,6 +9,7 @@ import "./index.css";
 import StartPage from "./pages/StartPage";
 import LoginPage from "./pages/LoginPage";
 import MainPage from "./pages/MainPage";
+import ResultsPage from "./pages/ResultsPage";
 
 const router = createRouter([
   {
@@ -22,6 +23,10 @@ const router = createRouter([
   {
     path: "main",
     element: <MainPage />,
+  },
+  {
+    path: "results",
+    element: <ResultsPage results={{ test: "test" }} />,
   },
 ]);
 
