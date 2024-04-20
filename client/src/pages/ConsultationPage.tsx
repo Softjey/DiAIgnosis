@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Card,
   CardBody,
@@ -9,6 +10,7 @@ import { loadInitQuestion, sendAnswer } from "../api/api";
 import InputBar from "../components/InputBar";
 import { useNavigate } from "react-router-dom";
 import { Question, Answer } from "../api/questions";
+import { AxiosError } from "axios";
 
 const ConsultationPage: React.FC = () => {
   const [inputValue, setInputValue] = useState("");
@@ -17,16 +19,26 @@ const ConsultationPage: React.FC = () => {
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [isFirstLoaded, setIsFirstLoaded] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSend = async () => {
     if (isFirstLoaded) {
       setIsLoading(true);
-      const response = await loadInitQuestion(inputValue);
-      setIsLoading(false);
-      setQuestions(response.questions);
-      console.log(response);
-      setIsFirstLoaded(false);
+      setError("");
+      try {
+        const response = await loadInitQuestion(inputValue);
+        setIsLoading(false);
+        setQuestions(response.questions);
+        console.log(response);
+        setIsFirstLoaded(false);
+      } catch (error: AxiosError | any) {
+        if (error instanceof AxiosError) {
+          setError(error.response?.data.message);
+        }
+
+        setIsLoading(false);
+      }
     } else {
       const newAnswers = [
         ...answers,
@@ -41,20 +53,33 @@ const ConsultationPage: React.FC = () => {
         setAnswers(newAnswers);
       } else {
         setIsLoading(true);
-        const response = await sendAnswer(newAnswers);
-        if (response.status === "ended") {
-          navigate("/results");
+        setError("");
+        try {
+          const response = await sendAnswer(newAnswers);
+          if (response.status === "ended") {
+            navigate("/results");
+          }
+          setIsLoading(false);
+          console.log(response);
+          setQuestions(response.questions);
+          setAnswers([]);
+          setCurrQuestionIndex(0);
+        } catch (error: any) {
+          if (error instanceof AxiosError) {
+            setError(error.response?.data.message);
+          }
+  
+          setIsLoading(false);
         }
-        setIsLoading(false);
-        console.log(response);
-        setQuestions(response.questions);
-        setAnswers([]);
-        setCurrQuestionIndex(0);
       }
     }
 
     setInputValue("");
   };
+
+  if (error) {
+    alert(`Error: ${error}`)
+  }
 
   return (
     <div

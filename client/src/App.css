@@ -57,7 +57,15 @@
     max-width: none;
   }
 
+  body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+  }
+
   #root {
+    margin: unset;
     display: flex;
     flex-direction: column;
     min-width: 300px;
