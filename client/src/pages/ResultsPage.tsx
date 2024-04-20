@@ -6,28 +6,39 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
+import { useEffect, useState } from "react";
+import { ResultsRespone, getResults } from "../api/api";
 
-interface Props {
-  results: Record<string, string>;
-}
+const ResultsPage: React.FC = () => {
+  const [results, setResults] = useState<ResultsRespone | null>(null);
 
-const ResultsPage: React.FC<Props> = ({ results }) => {
+  useEffect(() => {
+    getResults().then((newResults) => setResults(newResults));
+  }, []);
+
   return (
     <>
-      <Table hideHeader className="text-black w-[80vw] text-left">
-        <TableHeader>
-          <TableColumn>Question</TableColumn>
-          <TableColumn>Answer</TableColumn>
-        </TableHeader>
-        <TableBody>
-          {Object.entries(results).map(([key, value]) => (
-            <TableRow key={key}>
-              <TableCell>{key}</TableCell>
-              <TableCell>{value}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      {results && (
+        <Table
+          aria-label="Results of diagnoses"
+          isStriped
+          hideHeader
+          className="text-black w-[80vw] text-left"
+        >
+          <TableHeader>
+            <TableColumn>Question</TableColumn>
+            <TableColumn>Answer</TableColumn>
+          </TableHeader>
+          <TableBody>
+            {Object.entries(results.results).map(([key, value]) => (
+              <TableRow key={key}>
+                <TableCell>{key}</TableCell>
+                <TableCell>{value}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
     </>
   );
 };

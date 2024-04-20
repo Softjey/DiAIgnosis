@@ -20,3 +20,17 @@ export const sendAnswer = async (answers: Answer[]) => {
   });
   return response.data as AnswerResponse;
 };
+
+export interface ResultsRespone {
+  results: Record<string, string>;
+  diagnosis: string[];
+  doctors: string[];
+}
+
+export const getResults = async () => {
+  const consultationId = localStorage.getItem("consultationId");
+  const { data } = await axios.get(
+    `${BASE_URL}/consultation/result?consultationId=${consultationId}`
+  );
+  return data as ResultsRespone;
+};
