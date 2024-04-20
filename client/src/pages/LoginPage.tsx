@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import { Button, ButtonProps, Input } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
 import { UserContext } from "../store/userContext";
 import { users } from "../users";
 
@@ -63,7 +62,7 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-6 items-center">
-      <Header>Login</Header>
+      <h1 className="text-6xl font-medium">Login</h1>
       <div className="flex flex-col w-[300px] flex-wrap md:flex-nowrap gap-3">
         <Input
           type="email"

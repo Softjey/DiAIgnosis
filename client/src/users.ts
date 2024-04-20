@@ -9,7 +9,7 @@ export const users: User[] = [
     password: "pjatk12345678",
   },
   {
-    email: "jean.luc.momprive",
+    email: "jean.luc.momprive@gmail.com",
     password: "intel12345678",
   },
   {

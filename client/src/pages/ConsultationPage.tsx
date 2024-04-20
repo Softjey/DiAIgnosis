@@ -5,11 +5,11 @@ import {
   CardHeader,
   CircularProgress,
 } from "@nextui-org/react";
-import Header from "../components/Header";
 import { useState } from "react";
-import { Answer, Question, loadInitQuestion, sendAnswer } from "../api/api";
+import { loadInitQuestion, sendAnswer } from "../api/api";
 import InputBar from "../components/InputBar";
 import { useNavigate } from "react-router-dom";
+import { Question, Answer } from "../api/questions";
 
 const ConsultationPage: React.FC = () => {
   const [inputValue, setInputValue] = useState("");
@@ -52,15 +52,16 @@ const ConsultationPage: React.FC = () => {
   return (
     <div className="flex flex-col max-w-[60vw]">
       {isFirstLoaded ? (
-        <Header
+        <h1
           style={{
+            fontWeight: 500,
             marginBottom: "1.5rem",
             fontSize: "clamp(1.5rem, 10vw, 3.75rem)",
             textWrap: "wrap",
           }}
         >
           Describe your problem
-        </Header>
+        </h1>
       ) : questions[currQuestionIndex] ? (
         <Card
           shadow="none"
@@ -70,7 +71,7 @@ const ConsultationPage: React.FC = () => {
           <CardBody className="pb-8 px-8">
             <p
               style={{ fontSize: "clamp(1.25rem, 5vw, 1.875rem)" }}
-              className="text-center text-black"
+              className="text-center"
             >
               {questions[currQuestionIndex].text}
             </p>
