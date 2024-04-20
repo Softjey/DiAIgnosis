@@ -1,7 +1,7 @@
 import axios from "axios";
 import { initialQuestion, Answer, AnswerResponse } from "./questions";
 
-const BASE_URL = "http://localhost:4000";
+const BASE_URL = "https://hackathon-production-ec4e.up.railway.app";
 
 export const loadInitQuestion = async (patientComplaint: string) => {
   const response = await axios.post(`${BASE_URL}/consultation/start`, {

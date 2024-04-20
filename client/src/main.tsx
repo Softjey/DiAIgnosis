@@ -42,7 +42,7 @@ const router = createRouter([
   {
     path: "*",
     element: <NotFoundPage />,
-  }
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
