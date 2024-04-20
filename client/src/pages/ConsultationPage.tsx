@@ -1,4 +1,5 @@
 import {
+  Button,
   Card,
   CardBody,
   CardHeader,
@@ -8,13 +9,15 @@ import Header from "../components/Header";
 import { useState } from "react";
 import { Answer, Question, loadInitQuestion, sendAnswer } from "../api/api";
 import InputBar from "../components/InputBar";
+import { useNavigate } from "react-router-dom";
 
-const MainPage: React.FC = () => {
+const ConsultationPage: React.FC = () => {
   const [inputValue, setInputValue] = useState("");
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currQuestionIndex, setCurrQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [isFirstLoaded, setIsFirstLoaded] = useState(true);
+  const navigate = useNavigate();
 
   const handleSend = async () => {
     if (isFirstLoaded) {
@@ -81,8 +84,9 @@ const MainPage: React.FC = () => {
         value={inputValue}
         setValue={(value: string) => setInputValue(value)}
       />
+      {/* <Button onClick={() => navigate("/results")}></Button> */}
     </div>
   );
 };
 
-export default MainPage;
+export default ConsultationPage;

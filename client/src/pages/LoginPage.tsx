@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Button, ButtonProps, Input } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
+import { UserContext } from "../store/userContext";
 
 interface User {
   email: string;
@@ -57,6 +58,7 @@ const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isPasswordError, setIsPasswordError] = useState(false);
+  const { setIsLogged } = useContext(UserContext);
   const navigate = useNavigate();
 
   const validate = (email: string, password: string) => {
@@ -108,7 +110,8 @@ const LoginPage: React.FC = () => {
       <Button
         onClick={() => {
           if (validate(email, password)) {
-            navigate("/main");
+            setIsLogged(true);
+            navigate("/consultation");
           } else {
             setIsPasswordError(true);
           }

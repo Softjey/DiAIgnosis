@@ -14,7 +14,7 @@ interface Props {
 const ResultsPage: React.FC<Props> = ({ results }) => {
   return (
     <>
-      <Table>
+      <Table hideHeader className="text-black w-[80vw] text-left">
         <TableHeader>
           <TableColumn>Question</TableColumn>
           <TableColumn>Answer</TableColumn>
