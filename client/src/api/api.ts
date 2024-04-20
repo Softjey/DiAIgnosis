@@ -31,6 +31,7 @@ export const loadInitQuestion = async (patientComplaint: string) => {
 };
 
 export const sendAnswer = async (answers: Answer[]) => {
+  console.log(answers);
   const consultationId = localStorage.getItem("consultationId");
   const response = await axios.post(`${BASE_URL}/consultation/answer`, {
     answers,
