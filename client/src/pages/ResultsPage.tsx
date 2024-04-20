@@ -15,6 +15,7 @@ import { useEffect, useState, useContext } from "react";
 import { ResultsRespone, getResults } from "../api/api";
 import { UserContext } from "../store/userContext";
 import InputGroup from "../components/InputGroup";
+import Header from "../components/Header";
 
 const ResultsPage: React.FC = () => {
   const [results, setResults] = useState<ResultsRespone | null>(null);
@@ -33,64 +34,67 @@ const ResultsPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-5">
-      {results ? (
-        <>
-          <h1
-            style={{ fontSize: "clamp(3rem, 10vw ,6rem)" }}
-            className="text-primary font-medium"
-          >
-            Results
-          </h1>
-          <Table
-            topContent={<span>{user?.name}:</span>}
-            aria-label="Results of diagnoses"
-            isStriped
-            hideHeader
-            className="text-black w-[80vw] text-left results-table"
-          >
-            <TableHeader>
-              <TableColumn>Name</TableColumn>
-              <TableColumn>{user?.name}</TableColumn>
-            </TableHeader>
-            <TableBody>
-              {Object.entries(results.results).map(([key, value]) => (
-                <TableRow key={key}>
-                  <TableCell>{key}</TableCell>
-                  <TableCell>{value}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-          <Card>
-            <CardBody className="flex flex-row justify-evenly suggestions-card-body">
-              <RadioGroup label="Possible diagnoses">
-                {diagnoses.map((value) => (
-                  <Radio value={value}>{value}</Radio>
+    <>
+      <Header />
+      <div className="flex flex-col gap-5">
+        {results ? (
+          <>
+            <h1
+              style={{ fontSize: "clamp(3rem, 10vw ,6rem)" }}
+              className="text-primary font-medium"
+            >
+              Results
+            </h1>
+            <Table
+              topContent={<span>{user?.name}:</span>}
+              aria-label="Results of diagnoses"
+              isStriped
+              hideHeader
+              className="text-black w-[80vw] text-left results-table"
+            >
+              <TableHeader>
+                <TableColumn>Name</TableColumn>
+                <TableColumn>{user?.name}</TableColumn>
+              </TableHeader>
+              <TableBody>
+                {Object.entries(results.results).map(([key, value]) => (
+                  <TableRow key={key}>
+                    <TableCell>{key}</TableCell>
+                    <TableCell>{value}</TableCell>
+                  </TableRow>
                 ))}
-                <InputGroup
-                  inputValue={diagnosisInput}
-                  setInputValue={setDiagnosisInput}
-                  setValue={setDiagnoses}
-                />
-              </RadioGroup>
-              <RadioGroup label="Doctor suggestions">
-                {doctors.map((value) => (
-                  <Radio value={value}>{value}</Radio>
-                ))}
-                <InputGroup
-                  inputValue={doctorInput}
-                  setInputValue={setDoctorInput}
-                  setValue={setDoctors}
-                />
-              </RadioGroup>
-            </CardBody>
-          </Card>
-        </>
-      ) : (
-        <CircularProgress size="lg" />
-      )}
-    </div>
+              </TableBody>
+            </Table>
+            <Card>
+              <CardBody className="flex flex-row justify-evenly suggestions-card-body">
+                <RadioGroup label="Possible diagnoses">
+                  {diagnoses.map((value) => (
+                    <Radio value={value}>{value}</Radio>
+                  ))}
+                  <InputGroup
+                    inputValue={diagnosisInput}
+                    setInputValue={setDiagnosisInput}
+                    setValue={setDiagnoses}
+                  />
+                </RadioGroup>
+                <RadioGroup label="Doctor suggestions">
+                  {doctors.map((value) => (
+                    <Radio value={value}>{value}</Radio>
+                  ))}
+                  <InputGroup
+                    inputValue={doctorInput}
+                    setInputValue={setDoctorInput}
+                    setValue={setDoctors}
+                  />
+                </RadioGroup>
+              </CardBody>
+            </Card>
+          </>
+        ) : (
+          <CircularProgress size="lg" />
+        )}
+      </div>
+    </>
   );
 };
 
