@@ -26,6 +26,12 @@ body {
   min-height: 100vh;
 }
 
+@media (max-width: 768px) {
+  .background-img {
+    display: none;
+  }
+}
+
 /*
 a {
   font-weight: 500;

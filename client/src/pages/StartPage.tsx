@@ -31,7 +31,11 @@ function StartPage() {
             Get Started
           </Button>
         </div>
-        <img className="w-[50vw] object-center" src={imgUrl} alt="medicine" />
+        <img
+          className="w-[50vw] object-center background-img"
+          src={imgUrl}
+          alt="medicine"
+        />
       </main>
     </div>
   );
