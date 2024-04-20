@@ -15,7 +15,7 @@ import retry from 'async-retry';
 
 @Injectable()
 export class ConsultationService {
-  private gptModel: ChatCompletionCreateParamsBase['model'] = 'gpt-4-turbo-preview';
+  private gptModel: ChatCompletionCreateParamsBase['model'] = 'gpt-3.5-turbo-0125';
   private startPrompt = this.openAiService.systemPrompt(generateStartQuestionsPrompt);
   private continuePrompt = this.openAiService.systemPrompt(generateExtraQuestionsPrompt);
   private resultsPrompt = this.openAiService.systemPrompt(getResultsPrompt);
@@ -173,7 +173,7 @@ export class ConsultationService {
       consultation.questions.get(questionId).answer = answer;
     });
 
-    if (consultation.questions.size > 6) {
+    if (consultation.questions.size > 4) {
       return {
         status: 'ended',
         questions: null,
