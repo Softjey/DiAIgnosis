@@ -23,6 +23,17 @@ export default {
           focus: "#000"
         },
       },
-    },
+      highContrast: {
+        colors: {
+          primary: {
+            DEFAULT: "#FFFFFF",
+            foreground: "#000000",
+          },
+          focus: "#FFFF00",
+          background: "#000000",
+          text: "#FFFFFF"
+        },
+      }
+    }
   })],
 }

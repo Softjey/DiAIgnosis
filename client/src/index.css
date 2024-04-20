@@ -28,10 +28,16 @@ body {
   .background-img {
     display: none;
   }
-}
 
-@media (max-width: 425px) {
-  .suggestions-card {
+  .header {
+    display: none;
+  }
+
+  .results-table {
+    width: 100%;
+  }
+
+  .suggestions-card-body {
     flex-direction: column;
   }
 }

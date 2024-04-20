@@ -11,6 +11,7 @@ import InputBar from "../components/InputBar";
 import { useNavigate } from "react-router-dom";
 import { Question, Answer } from "../api/questions";
 import { AxiosError } from "axios";
+import Header from "../components/Header";
 
 const ConsultationPage: React.FC = () => {
   const [inputValue, setInputValue] = useState("");
@@ -68,7 +69,7 @@ const ConsultationPage: React.FC = () => {
           if (error instanceof AxiosError) {
             setError(error.response?.data.message);
           }
-  
+
           setIsLoading(false);
         }
       }
@@ -77,54 +78,55 @@ const ConsultationPage: React.FC = () => {
     setInputValue("");
   };
 
-  if (error) {
-    alert(`Error: ${error}`)
-  }
-
   return (
-    <div
-      className="flex flex-col consultation-container"
-      style={{ width: "100%" }}
-    >
-      {isLoading ? (
-        <div className="flex justify-center mb-20">
-          <CircularProgress size="lg" />
-        </div>
-      ) : isFirstLoaded ? (
-        <h1
-          style={{
-            fontWeight: 500,
-            marginBottom: "1.5rem",
-            fontSize: "clamp(1.5rem, 5vw, 3.75rem)",
-            textWrap: "wrap",
-          }}
-        >
-          Describe your problem
-        </h1>
-      ) : (
-        <Card
-          shadow="none"
-          className="mb-3 bg-zinc-100 pdb-[15px] text-[#000000a4]"
-        >
-          <CardHeader className="pb-0">Question</CardHeader>
-          <CardBody className="pb-8 px-8">
-            <p
-              style={{ fontSize: "clamp(1.25rem, 5vw, 1.875rem)" }}
-              className="text-center"
-            >
-              {questions[currQuestionIndex].text}
-            </p>
-          </CardBody>
-        </Card>
-      )}
-      <InputBar
-        classnames="input-bar"
-        disabled={isLoading}
-        handleSend={handleSend}
-        value={inputValue}
-        setValue={(value: string) => setInputValue(value)}
-      />
-    </div>
+    <>
+      <Header />
+      <div
+        className="flex flex-col consultation-container"
+        style={{ width: "100%" }}
+      >
+        {isLoading ? (
+          <div className="flex justify-center mb-20">
+            <CircularProgress size="lg" />
+          </div>
+        ) : isFirstLoaded ? (
+          <h1
+            style={{
+              fontWeight: 500,
+              marginBottom: "1.5rem",
+              fontSize: "clamp(1.5rem, 5vw, 3.75rem)",
+              textWrap: "wrap",
+            }}
+          >
+            Describe your problem
+          </h1>
+        ) : (
+          <Card
+            shadow="none"
+            className="mb-3 bg-zinc-100 pdb-[15px] text-[#000000a4]"
+          >
+            <CardHeader className="pb-0">Question</CardHeader>
+            <CardBody className="pb-8 px-8">
+              <p
+                style={{ fontSize: "clamp(1.25rem, 5vw, 1.875rem)" }}
+                className="text-center"
+              >
+                {questions[currQuestionIndex].text}
+              </p>
+            </CardBody>
+          </Card>
+        )}
+        <InputBar
+          errorMessage={`Error: ${error}`}
+          isInvalid={!!error}
+          classnames="input-bar"
+          disabled={isLoading}
+          handleSend={handleSend}
+          value={inputValue}
+          setValue={(value: string) => setInputValue(value)}
+        />
+      </div>
+    </>
   );
 };
 
