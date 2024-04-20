@@ -24,25 +24,25 @@ export class ConsultationService {
   constructor(private readonly openAiService: OpenAiService) {}
 
   private async getJSONResponse(messages: ChatCompletionCreateParamsBase['messages']) {
-    const trySend = async () => {
-      const response = await this.openAiService.chatGptRequest({
-        messages,
-        model: this.gptModel,
-        response_format: { type: 'json_object' },
-      });
-
-      return JSON.parse(response);
-    };
-
-    return retry(trySend, {
-      retries: 2,
-      factor: 2, // The exponential factor
-      minTimeout: 100, // The number of milliseconds before starting the first retry
-      maxTimeout: 100, // The maximum number of milliseconds between two retries
-      onRetry: (error, attemptNumber) => {
-        console.log(`Attempt ${attemptNumber} failed. Error: ${error.message}`);
-      },
+    // const trySend = async () => {
+    const response = await this.openAiService.chatGptRequest({
+      messages,
+      model: this.gptModel,
+      response_format: { type: 'json_object' },
     });
+
+    return JSON.parse(response);
+    // };
+
+    // return retry(trySend, {
+    //   retries: 2,
+    //   factor: 2, // The exponential factor
+    //   minTimeout: 100, // The number of milliseconds before starting the first retry
+    //   maxTimeout: 100, // The maximum number of milliseconds between two retries
+    //   onRetry: (error, attemptNumber) => {
+    //     console.log(`Attempt ${attemptNumber} failed. Error: ${error.message}`);
+    //   },
+    // });
   }
 
   private prepareForClient(questions: Question[]) {
