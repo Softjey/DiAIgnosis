@@ -8,8 +8,8 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  color-scheme: light;
+  color: rgba(0, 0, 0, 0.87);
   background-color: #ffffff;
 
   font-synthesis: none;
@@ -26,9 +26,10 @@ body {
   min-height: 100vh;
 }
 
-input,
-textarea {
-  caret-color: black;
+@media (max-width: 768px) {
+  .background-img {
+    display: none;
+  }
 }
 
 /*

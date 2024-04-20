@@ -17,6 +17,12 @@ const InputBar: React.FC<Props> = ({ value, setValue, handleSend }) => {
         placeholder="Try to be more precise"
         minRows={1}
         value={value}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            handleSend();
+          }
+        }}
       />
       <MicrophoneButton />
       <SendButton onClick={handleSend} />
