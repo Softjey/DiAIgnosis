@@ -23,3 +23,15 @@ body {
   place-items: center;
   min-height: 100vh;
 }
+
+@media (max-width: 768px) {
+  .background-img {
+    display: none;
+  }
+}
+
+@media (max-width: 425px) {
+  .suggestions-card {
+    flex-direction: column;
+  }
+}
