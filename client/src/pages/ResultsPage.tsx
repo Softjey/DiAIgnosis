@@ -1,6 +1,7 @@
 import {
   Card,
   CardBody,
+  CircularProgress,
   Radio,
   RadioGroup,
   Table,
@@ -33,15 +34,20 @@ const ResultsPage: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-5">
-      <h1 className="text-8xl text-primary font-medium mb-5">Results</h1>
-      {results && (
+      {results ? (
         <>
+          <h1
+            style={{ fontSize: "clamp(3rem, 10vw ,6rem)" }}
+            className="text-primary font-medium"
+          >
+            Results
+          </h1>
           <Table
             topContent={<span>{user?.name}:</span>}
             aria-label="Results of diagnoses"
             isStriped
             hideHeader
-            className="text-black w-[80vw] text-left"
+            className="text-black w-[80vw] text-left results-table"
           >
             <TableHeader>
               <TableColumn>Name</TableColumn>
@@ -56,8 +62,8 @@ const ResultsPage: React.FC = () => {
               ))}
             </TableBody>
           </Table>
-          <Card className="suggestions-card">
-            <CardBody className="flex flex-row justify-evenly">
+          <Card>
+            <CardBody className="flex flex-row justify-evenly suggestions-card-body">
               <RadioGroup label="Possible diagnoses">
                 {diagnoses.map((value) => (
                   <Radio value={value}>{value}</Radio>
@@ -81,6 +87,8 @@ const ResultsPage: React.FC = () => {
             </CardBody>
           </Card>
         </>
+      ) : (
+        <CircularProgress size="lg" />
       )}
     </div>
   );

@@ -68,7 +68,7 @@ const ConsultationPage: React.FC = () => {
           if (error instanceof AxiosError) {
             setError(error.response?.data.message);
           }
-  
+
           setIsLoading(false);
         }
       }
@@ -76,10 +76,6 @@ const ConsultationPage: React.FC = () => {
 
     setInputValue("");
   };
-
-  if (error) {
-    alert(`Error: ${error}`)
-  }
 
   return (
     <div
@@ -118,6 +114,8 @@ const ConsultationPage: React.FC = () => {
         </Card>
       )}
       <InputBar
+        errorMessage={`Error: ${error}`}
+        isInvalid={!!error}
         classnames="input-bar"
         disabled={isLoading}
         handleSend={handleSend}
