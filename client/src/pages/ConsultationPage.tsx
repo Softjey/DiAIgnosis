@@ -57,7 +57,10 @@ const ConsultationPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col max-w-[60vw]">
+    <div
+      className="flex flex-col consultation-container"
+      style={{ width: "100%" }}
+    >
       {isLoading ? (
         <div className="flex justify-center mb-20">
           <CircularProgress size="lg" />
@@ -67,7 +70,7 @@ const ConsultationPage: React.FC = () => {
           style={{
             fontWeight: 500,
             marginBottom: "1.5rem",
-            fontSize: "clamp(1.5rem, 10vw, 3.75rem)",
+            fontSize: "clamp(1.5rem, 5vw, 3.75rem)",
             textWrap: "wrap",
           }}
         >
@@ -90,6 +93,7 @@ const ConsultationPage: React.FC = () => {
         </Card>
       )}
       <InputBar
+        classnames="input-bar"
         disabled={isLoading}
         handleSend={handleSend}
         value={inputValue}
