@@ -3,18 +3,7 @@ import { Button, ButtonProps, Input } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import { UserContext } from "../store/userContext";
-
-interface User {
-  email: string;
-  password: string;
-}
-
-const users: User[] = [
-  {
-    email: "alex.smith@gmail.com",
-    password: "theStrongestPassword",
-  },
-];
+import { users } from "../users";
 
 interface Props {
   isClosed: boolean;
