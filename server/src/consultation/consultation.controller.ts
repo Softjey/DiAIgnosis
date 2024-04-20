@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { StartConsultationDto } from './dtos/start-consultation.dto';
 import { ConsultationService } from './consultation.service';
 import { AnswerDto } from './dtos/answer.dto';
@@ -18,7 +18,7 @@ export class ConsultationController {
   }
 
   @Get('result')
-  result() {
-    return 'Consultation result';
+  result(@Query('consultationId') consultationId: string) {
+    return this.consultationService.getResults(consultationId);
   }
 }
