@@ -8,7 +8,10 @@ async function bootstrap() {
   app.enableCors({
     origin: ['http://localhost:5173', 'https://softjey.github.io', 'https://junk-debug.github.io'],
     credentials: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type,Authorization',
   });
+
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
