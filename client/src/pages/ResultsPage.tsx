@@ -20,6 +20,7 @@ const ResultsPage: React.FC = () => {
     <>
       {results && (
         <Table
+          topContent={<span>Name</span>}
           aria-label="Results of diagnoses"
           isStriped
           hideHeader
