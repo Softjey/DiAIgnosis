@@ -11,10 +11,11 @@ import { Question } from './interfaces/question.interface';
 import { ChatCompletionCreateParamsBase } from 'openai/resources/chat/completions';
 import { getResultsPrompt } from './prompts/get-results';
 import { diagnosisDoctorsPrompt } from './prompts/diagnosis-doctors';
+import retry from 'retry';
 
 @Injectable()
 export class ConsultationService {
-  private gptModel: ChatCompletionCreateParamsBase['model'] = 'gpt-3.5-turbo-0125';
+  private gptModel: ChatCompletionCreateParamsBase['model'] = 'gpt-4-turbo-preview';
   private startPrompt = this.openAiService.systemPrompt(generateStartQuestionsPrompt);
   private continuePrompt = this.openAiService.systemPrompt(generateExtraQuestionsPrompt);
   private resultsPrompt = this.openAiService.systemPrompt(getResultsPrompt);
@@ -129,8 +130,6 @@ export class ConsultationService {
       questions: new Map(questions.map((question) => [question.id, question])),
     });
 
-    console.log('consultationId', consultationId);
-
     return {
       consultationId,
       questions: this.prepareForClient(questions),
@@ -162,7 +161,7 @@ export class ConsultationService {
       consultation.questions.get(questionId).answer = answer;
     });
 
-    if (consultation.questions.size > 4) {
+    if (consultation.questions.size > 6) {
       return {
         status: 'ended',
         questions: null,
