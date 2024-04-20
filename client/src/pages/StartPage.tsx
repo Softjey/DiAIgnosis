@@ -18,7 +18,10 @@ function StartPage() {
       </header>
       <main className="flex gap-10 items-center">
         <div className="flex flex-col items-center gap-3">
-          <h1 className="text-black text-7xl font-bold text-center">
+          <h1
+            className="text-black text-7xl font-bold text-center"
+            style={{ fontSize: "clamp(40px, 5vw, 80px)" }}
+          >
             {slogan}
           </h1>
           <p className="text-black text-xl font-thin">{description}</p>
