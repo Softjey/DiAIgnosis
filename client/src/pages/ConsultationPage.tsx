@@ -1,5 +1,4 @@
 import {
-  Button,
   Card,
   CardBody,
   CardHeader,
@@ -17,11 +16,14 @@ const ConsultationPage: React.FC = () => {
   const [currQuestionIndex, setCurrQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [isFirstLoaded, setIsFirstLoaded] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSend = async () => {
     if (isFirstLoaded) {
+      setIsLoading(true);
       const response = await loadInitQuestion(inputValue);
+      setIsLoading(false);
       setQuestions(response.questions);
       console.log(response);
       setIsFirstLoaded(false);
@@ -38,7 +40,12 @@ const ConsultationPage: React.FC = () => {
         setCurrQuestionIndex((prev) => prev + 1);
         setAnswers(newAnswers);
       } else {
+        setIsLoading(true);
         const response = await sendAnswer(newAnswers);
+        if (response.status === "ended") {
+          navigate("/results");
+        }
+        setIsLoading(false);
         console.log(response);
         setQuestions(response.questions);
         setAnswers([]);
@@ -51,7 +58,11 @@ const ConsultationPage: React.FC = () => {
 
   return (
     <div className="flex flex-col max-w-[60vw]">
-      {isFirstLoaded ? (
+      {isLoading ? (
+        <div className="flex justify-center mb-20">
+          <CircularProgress size="lg" />
+        </div>
+      ) : isFirstLoaded ? (
         <h1
           style={{
             fontWeight: 500,
@@ -62,7 +73,7 @@ const ConsultationPage: React.FC = () => {
         >
           Describe your problem
         </h1>
-      ) : questions[currQuestionIndex] ? (
+      ) : (
         <Card
           shadow="none"
           className="mb-3 bg-zinc-100 pdb-[15px] text-[#000000a4]"
@@ -77,15 +88,13 @@ const ConsultationPage: React.FC = () => {
             </p>
           </CardBody>
         </Card>
-      ) : (
-        <CircularProgress />
       )}
       <InputBar
+        disabled={isLoading}
         handleSend={handleSend}
         value={inputValue}
         setValue={(value: string) => setInputValue(value)}
       />
-      {/* <Button onClick={() => navigate("/results")}></Button> */}
     </div>
   );
 };
