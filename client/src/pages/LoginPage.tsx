@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { Button, ButtonProps, Input } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../store/userContext";
-import { users } from "../users";
+import { users } from "../store/users";
 
 interface Props {
   isClosed: boolean;
@@ -46,7 +46,7 @@ const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isPasswordError, setIsPasswordError] = useState(false);
-  const { setIsLogged } = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
   const validate = (email: string, password: string) => {
@@ -57,6 +57,7 @@ const LoginPage: React.FC = () => {
     ) {
       return true;
     }
+
     return false;
   };
 
@@ -98,7 +99,7 @@ const LoginPage: React.FC = () => {
       <Button
         onClick={() => {
           if (validate(email, password)) {
-            setIsLogged(true);
+            setUser(users.find((user) => user.email === email) ?? null);
             navigate("/consultation");
           } else {
             setIsPasswordError(true);

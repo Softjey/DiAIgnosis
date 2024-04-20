@@ -1,9 +1,10 @@
 import React, { Dispatch, SetStateAction } from "react";
 import { createContext, useState } from "react";
+import { User } from "./users";
 
 const initialState = {
-  isLogged: false,
-  setIsLogged: (() => {}) as Dispatch<SetStateAction<boolean>>,
+  user: null as User | null,
+  setUser: (() => {}) as Dispatch<SetStateAction<User | null>>,
 };
 
 export const UserContext = createContext(initialState);
@@ -11,10 +12,10 @@ export const UserContext = createContext(initialState);
 const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [isLogged, setIsLogged] = useState<boolean>(false);
+  const [user, setUser] = useState<User | null>(null);
 
   return (
-    <UserContext.Provider value={{ isLogged, setIsLogged }}>
+    <UserContext.Provider value={{ user, setUser }}>
       {children}
     </UserContext.Provider>
   );

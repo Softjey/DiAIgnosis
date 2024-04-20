@@ -7,10 +7,10 @@ interface Props {
 }
 
 const Authenticated: React.FC<Props> = ({ children }) => {
-  const { isLogged } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const location = useLocation();
 
-  if (!isLogged) {
+  if (!user) {
     return (
       <Navigate to={"/login"} state={{ redirect: location.pathname }} replace />
     );
