@@ -5,12 +5,6 @@ import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.enableCors({
-    origin: ['http://localhost:5173', 'https://softjey.github.io', 'https://junk-debug.github.io'],
-    credentials: true,
-    preflightContinue: true,
-  });
-
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
@@ -18,6 +12,11 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
+
+  app.enableCors({
+    origin: ['http://localhost:5173', 'https://softjey.github.io', 'https://junk-debug.github.io'],
+    credentials: true,
+  });
 
   await app.listen(4000);
   console.log(`Application is running on: ${await app.getUrl()}`);
