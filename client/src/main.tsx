@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import { NextUIProvider } from "@nextui-org/react";
 import {
   RouterProvider,
-  createBrowserRouter as createRouter,
+  createHashRouter as createRouter,
 } from "react-router-dom";
 import "./index.css";
 import StartPage from "./pages/StartPage";
