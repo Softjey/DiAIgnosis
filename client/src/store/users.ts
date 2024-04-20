@@ -22,7 +22,7 @@ export const users: User[] = [
   },
   {
     name: "Bartłomiej Przybyciel",
-    email: "bartlomiej.przybyciel",
+    email: "bartlomiej.przybyciel@gmail.com",
     password: "h@sl0Dyrector@",
   },
   {
