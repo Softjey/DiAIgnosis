@@ -11,7 +11,7 @@ import { Question } from './interfaces/question.interface';
 import { ChatCompletionCreateParamsBase } from 'openai/resources/chat/completions';
 import { getResultsPrompt } from './prompts/get-results';
 import { diagnosisDoctorsPrompt } from './prompts/diagnosis-doctors';
-import retry from 'async-retry';
+import * as retry from 'async-retry';
 
 @Injectable()
 export class ConsultationService {
@@ -24,25 +24,25 @@ export class ConsultationService {
   constructor(private readonly openAiService: OpenAiService) {}
 
   private async getJSONResponse(messages: ChatCompletionCreateParamsBase['messages']) {
-    // const trySend = async () => {
-    const response = await this.openAiService.chatGptRequest({
-      messages,
-      model: this.gptModel,
-      response_format: { type: 'json_object' },
+    const trySend = async () => {
+      const response = await this.openAiService.chatGptRequest({
+        messages,
+        model: this.gptModel,
+        response_format: { type: 'json_object' },
+      });
+
+      return JSON.parse(response);
+    };
+
+    return retry(trySend, {
+      retries: 4,
+      factor: 2, // The exponential factor
+      minTimeout: 50, // The number of milliseconds before starting the first retry
+      maxTimeout: 50, // The maximum number of milliseconds between two retries
+      onRetry: (error, attemptNumber) => {
+        console.log(`Attempt ${attemptNumber} failed. Error: ${error.message}`);
+      },
     });
-
-    return JSON.parse(response);
-    // };
-
-    // return retry(trySend, {
-    //   retries: 2,
-    //   factor: 2, // The exponential factor
-    //   minTimeout: 100, // The number of milliseconds before starting the first retry
-    //   maxTimeout: 100, // The maximum number of milliseconds between two retries
-    //   onRetry: (error, attemptNumber) => {
-    //     console.log(`Attempt ${attemptNumber} failed. Error: ${error.message}`);
-    //   },
-    // });
   }
 
   private prepareForClient(questions: Question[]) {
