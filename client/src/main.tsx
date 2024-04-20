@@ -12,6 +12,7 @@ import ConsultationPage from "./pages/ConsultationPage";
 import ResultsPage from "./pages/ResultsPage";
 import UserContextProvider from "./store/userContext";
 import Authenticated from "./components/Authenticated";
+import NotFoundPage from "./pages/NotFoundPage";
 
 const router = createRouter([
   {
@@ -38,6 +39,10 @@ const router = createRouter([
       </Authenticated>
     ),
   },
+  {
+    path: "*",
+    element: <NotFoundPage />,
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
