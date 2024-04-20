@@ -32,6 +32,12 @@ body {
   }
 }
 
+@media (max-width: 425px) {
+  .suggestions-card {
+    flex-direction: column;
+  }
+}
+
 /*
 a {
   font-weight: 500;
