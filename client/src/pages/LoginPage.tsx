@@ -99,7 +99,13 @@ const LoginPage: React.FC = () => {
       <Button
         onClick={() => {
           if (validate(email, password)) {
-            setUser(users.find((user) => user.email === email) ?? null);
+            setUser(
+              users.find((user) => user.email === email) ?? {
+                name: email,
+                email,
+                password,
+              }
+            );
             navigate("/consultation");
           } else {
             setIsPasswordError(true);
