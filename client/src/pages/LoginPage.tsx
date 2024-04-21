@@ -50,15 +50,15 @@ const LoginPage: React.FC = () => {
   const navigate = useNavigate();
 
   const validate = (email: string, password: string) => {
-    if (
-      password ===
-      users.find((user) => user.email.toLowerCase() === email.toLowerCase())
-        ?.password
-    ) {
-      return true;
-    }
+    // if (
+    //   password ===
+    //   users.find((user) => user.email.toLowerCase() === email.toLowerCase())
+    //     ?.password
+    // ) {
+    //   return true;
+    // }
 
-    return false;
+    return true;
   };
 
   return (

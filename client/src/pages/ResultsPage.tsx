@@ -1,16 +1,6 @@
-import {
-  Card,
-  CardBody,
-  CircularProgress,
-  Radio,
-  RadioGroup,
-  Table,
-  TableBody,
-  TableCell,
-  TableColumn,
-  TableHeader,
-  TableRow,
-} from "@nextui-org/react";
+import { Card, CardBody, CircularProgress, Radio } from "@nextui-org/react";
+import { RadioGroup, Table, TableBody, TableCell } from "@nextui-org/react";
+import { TableColumn, TableHeader, TableRow } from "@nextui-org/react";
 import { useEffect, useState, useContext } from "react";
 import { ResultsRespone, getResults } from "../api/api";
 import { UserContext } from "../store/userContext";
@@ -46,7 +36,7 @@ const ResultsPage: React.FC = () => {
               Results
             </h1>
             <Table
-              topContent={<span>{user?.name}:</span>}
+              topContent={<span>{user?.name ?? ''}:</span>}
               aria-label="Results of diagnoses"
               isStriped
               hideHeader
