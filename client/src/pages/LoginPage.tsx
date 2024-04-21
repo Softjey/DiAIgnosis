@@ -50,15 +50,15 @@ const LoginPage: React.FC = () => {
   const navigate = useNavigate();
 
   const validate = (email: string, password: string) => {
-    // if (
-    //   password ===
-    //   users.find((user) => user.email.toLowerCase() === email.toLowerCase())
-    //     ?.password
-    // ) {
-    //   return true;
-    // }
+    if (
+      password ===
+      users.find((user) => user.email.toLowerCase() === email.toLowerCase())
+        ?.password
+    ) {
+      return true;
+    }
 
-    return true;
+    return false;
   };
 
   return (
@@ -99,13 +99,7 @@ const LoginPage: React.FC = () => {
       <Button
         onClick={() => {
           if (validate(email, password)) {
-            setUser(
-              users.find((user) => user.email === email) ?? {
-                name: email,
-                email,
-                password,
-              }
-            );
+            setUser(users.find((user) => user.email === email) ?? null);
             navigate("/consultation");
           } else {
             setIsPasswordError(true);

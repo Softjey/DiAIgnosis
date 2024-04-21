@@ -26,17 +26,17 @@ const router = createRouter([
   {
     path: "consultation",
     element: (
-      <Authenticated>
+      // <Authenticated>
         <ConsultationPage />
-      </Authenticated>
+      /* </Authenticated> */
     ),
   },
   {
     path: "results",
     element: (
-      <Authenticated>
-        <ResultsPage />,
-      </Authenticated>
+      // <Authenticated>
+        <ResultsPage />
+      /* </Authenticated> */
     ),
   },
   {

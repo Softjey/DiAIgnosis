@@ -25,7 +25,7 @@ function StartPage() {
             size="lg"
             color="primary"
             variant="ghost"
-            onClick={() => navigate("/login")}
+            onClick={() => navigate("/consultation")}
           >
             Get Started
           </Button>

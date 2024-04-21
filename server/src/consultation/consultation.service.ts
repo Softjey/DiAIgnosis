@@ -173,7 +173,7 @@ export class ConsultationService {
       consultation.questions.get(questionId).answer = answer;
     });
 
-    if (consultation.questions.size > 4) {
+    if (consultation.questions.size > 15) {
       return {
         status: 'ended',
         questions: null,
