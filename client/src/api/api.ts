@@ -22,7 +22,7 @@ export const sendAnswer = async (answers: Answer[]) => {
   return response.data as AnswerResponse;
 };
 
-export interface ResultsRespone {
+export interface ResultsResponse {
   results: Record<string, string>;
   diagnosis: string[];
   doctors: string[];
@@ -33,5 +33,5 @@ export const getResults = async () => {
   const { data } = await axios.get(
     `${BASE_URL}/consultation/result?consultationId=${consultationId}`
   );
-  return data as ResultsRespone;
+  return data as ResultsResponse;
 };

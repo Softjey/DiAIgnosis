@@ -2,13 +2,13 @@ import { Card, CardBody, CircularProgress, Radio } from "@nextui-org/react";
 import { RadioGroup, Table, TableBody, TableCell } from "@nextui-org/react";
 import { TableColumn, TableHeader, TableRow } from "@nextui-org/react";
 import { useEffect, useState, useContext } from "react";
-import { ResultsRespone, getResults } from "../api/api";
+import { ResultsResponse, getResults } from "../api/api";
 import { UserContext } from "../store/userContext";
 import InputGroup from "../components/InputGroup";
 import Header from "../components/Header";
 
 const ResultsPage: React.FC = () => {
-  const [results, setResults] = useState<ResultsRespone | null>(null);
+  const [results, setResults] = useState<ResultsResponse | null>(null);
   const [diagnoses, setDiagnoses] = useState<string[]>([]);
   const [doctors, setDoctors] = useState<string[]>([]);
   const [diagnosisInput, setDiagnosisInput] = useState("");
@@ -36,7 +36,7 @@ const ResultsPage: React.FC = () => {
               Results
             </h1>
             <Table
-              topContent={<span>{user?.name ?? ''}:</span>}
+              topContent={<span>{user?.name ?? ""}:</span>}
               aria-label="Results of diagnoses"
               isStriped
               hideHeader
@@ -58,8 +58,8 @@ const ResultsPage: React.FC = () => {
             <Card>
               <CardBody className="flex flex-row justify-evenly suggestions-card-body">
                 <RadioGroup label="Possible diagnoses">
-                  {diagnoses.map((value) => (
-                    <Radio value={value}>{value}</Radio>
+                  {diagnoses.map((diagnosis) => (
+                    <Radio value={diagnosis}>{diagnosis}</Radio>
                   ))}
                   <InputGroup
                     inputValue={diagnosisInput}
@@ -68,8 +68,8 @@ const ResultsPage: React.FC = () => {
                   />
                 </RadioGroup>
                 <RadioGroup label="Doctor suggestions">
-                  {doctors.map((value) => (
-                    <Radio value={value}>{value}</Radio>
+                  {doctors.map((doctorProfession) => (
+                    <Radio value={doctorProfession}>{doctorProfession}</Radio>
                   ))}
                   <InputGroup
                     inputValue={doctorInput}
