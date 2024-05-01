@@ -9,7 +9,7 @@ interface Props {
   isInvalid: boolean;
   value: string;
   setValue: (value: string) => void;
-  handleSend: () => void;
+  onSubmit: () => void;
   classnames?: string;
 }
 
@@ -18,7 +18,7 @@ const InputBar: React.FC<Props> = ({
   disabled,
   value,
   setValue,
-  handleSend,
+  onSubmit,
   isInvalid,
   errorMessage,
 }) => {
@@ -38,12 +38,12 @@ const InputBar: React.FC<Props> = ({
         onKeyDown={(e) => {
           if (e.key === "Enter") {
             e.preventDefault();
-            handleSend();
+            onSubmit();
           }
         }}
       />
       <MicrophoneButton isDisabled={true} />
-      <SendButton isDisabled={disabled} onClick={handleSend} />
+      <SendButton isDisabled={disabled} onClick={onSubmit} />
     </div>
   );
 };

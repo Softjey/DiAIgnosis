@@ -8,11 +8,11 @@ import {
 import "./index.css";
 import StartPage from "./pages/StartPage";
 import LoginPage from "./pages/LoginPage";
-import ConsultationPage from "./pages/ConsultationPage";
 import ResultsPage from "./pages/ResultsPage";
 import UserContextProvider from "./store/userContext";
 import Authenticated from "./components/Authenticated";
 import NotFoundPage from "./pages/NotFoundPage";
+import ConsultationPage from "./pages/ConsultationPage";
 
 const router = createRouter([
   {
@@ -27,7 +27,7 @@ const router = createRouter([
     path: "consultation",
     element: (
       // <Authenticated>
-        <ConsultationPage />
+      <ConsultationPage />
       /* </Authenticated> */
     ),
   },
@@ -35,7 +35,7 @@ const router = createRouter([
     path: "results",
     element: (
       // <Authenticated>
-        <ResultsPage />
+      <ResultsPage />
       /* </Authenticated> */
     ),
   },

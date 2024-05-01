@@ -1,88 +1,45 @@
-import { Card, CardBody, CircularProgress, Radio } from "@nextui-org/react";
-import { RadioGroup, Table, TableBody, TableCell } from "@nextui-org/react";
-import { TableColumn, TableHeader, TableRow } from "@nextui-org/react";
-import { useEffect, useState, useContext } from "react";
+import { CircularProgress } from "@nextui-org/react";
+import { useEffect, useState } from "react";
 import { ResultsResponse, getResults } from "../api/api";
-import { UserContext } from "../store/userContext";
-import InputGroup from "../components/InputGroup";
 import Header from "../components/Header";
+import { DoctorsAndDiagnosisCard } from "../components/DoctorsAndDiagnosisCard";
+import { ResultsTable } from "../components/ResultsTable";
 
 const ResultsPage: React.FC = () => {
   const [results, setResults] = useState<ResultsResponse | null>(null);
-  const [diagnoses, setDiagnoses] = useState<string[]>([]);
-  const [doctors, setDoctors] = useState<string[]>([]);
-  const [diagnosisInput, setDiagnosisInput] = useState("");
-  const [doctorInput, setDoctorInput] = useState("");
-  const { user } = useContext(UserContext);
 
   useEffect(() => {
-    getResults().then((newResults) => {
-      setResults(newResults);
-      setDiagnoses(newResults.diagnosis);
-      setDoctors(newResults.doctors);
-    });
+    getResults().then(setResults);
   }, []);
+
+  if (!results) {
+    return (
+      <>
+        <Header />
+        <CircularProgress size="lg" />
+      </>
+    );
+  }
 
   return (
     <>
       <Header />
       <div className="flex flex-col gap-5">
-        {results ? (
-          <>
-            <h1
-              style={{ fontSize: "clamp(3rem, 10vw ,6rem)" }}
-              className="text-primary font-medium"
-            >
-              Results
-            </h1>
-            <Table
-              topContent={<span>{user?.name ?? ""}:</span>}
-              aria-label="Results of diagnoses"
-              isStriped
-              hideHeader
-              className="text-black w-[80vw] text-left results-table"
-            >
-              <TableHeader>
-                <TableColumn>Name</TableColumn>
-                <TableColumn>{user?.name}</TableColumn>
-              </TableHeader>
-              <TableBody>
-                {Object.entries(results.results).map(([key, value]) => (
-                  <TableRow key={key}>
-                    <TableCell>{key}</TableCell>
-                    <TableCell>{value}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-            <Card>
-              <CardBody className="flex flex-row justify-evenly suggestions-card-body">
-                <RadioGroup label="Possible diagnoses">
-                  {diagnoses.map((diagnosis) => (
-                    <Radio value={diagnosis}>{diagnosis}</Radio>
-                  ))}
-                  <InputGroup
-                    inputValue={diagnosisInput}
-                    setInputValue={setDiagnosisInput}
-                    setValue={setDiagnoses}
-                  />
-                </RadioGroup>
-                <RadioGroup label="Doctor suggestions">
-                  {doctors.map((doctorProfession) => (
-                    <Radio value={doctorProfession}>{doctorProfession}</Radio>
-                  ))}
-                  <InputGroup
-                    inputValue={doctorInput}
-                    setInputValue={setDoctorInput}
-                    setValue={setDoctors}
-                  />
-                </RadioGroup>
-              </CardBody>
-            </Card>
-          </>
-        ) : (
-          <CircularProgress size="lg" />
-        )}
+        <>
+          <h1
+            className="text-primary font-medium"
+            style={{ fontSize: "clamp(3rem, 10vw ,6rem)" }}
+          >
+            Results
+          </h1>
+          
+          <ResultsTable results={results} />
+
+          <DoctorsAndDiagnosisCard
+            initialDiagnoses={results.diagnosis}
+            initialDoctors={results.doctors}
+          />
+        </>
       </div>
     </>
   );

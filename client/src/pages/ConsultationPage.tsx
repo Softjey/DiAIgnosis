@@ -1,127 +1,93 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  CircularProgress,
-} from "@nextui-org/react";
+import { CircularProgress } from "@nextui-org/react";
 import { useState } from "react";
-import { loadInitQuestion, sendAnswer } from "../api/api";
+import * as apiClient from "../api/api";
 import InputBar from "../components/InputBar";
 import { useNavigate } from "react-router-dom";
 import { Question, Answer } from "../api/questions";
-import { AxiosError } from "axios";
 import Header from "../components/Header";
+import { QuestionCard } from "../components/QuestionCard";
+import { useRequest } from "../hooks/useRequest";
 
 const ConsultationPage: React.FC = () => {
+  const [handleRequest, isLoading, error] = useRequest();
   const [inputValue, setInputValue] = useState("");
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currQuestionIndex, setCurrQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [isFirstLoaded, setIsFirstLoaded] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSend = async () => {
-    if (isFirstLoaded) {
-      setIsLoading(true);
-      setError("");
-      try {
-        const response = await loadInitQuestion(inputValue);
-        setIsLoading(false);
-        setQuestions(response.questions);
-        console.log(response);
+  const sendProblem = () => {
+    const problemRequest = apiClient
+      .startConsultation(inputValue)
+      .then(({ questions }) => {
+        setQuestions(questions);
         setIsFirstLoaded(false);
-      } catch (error: AxiosError | any) {
-        if (error instanceof AxiosError) {
-          setError(error.response?.data.message);
-        }
+        setInputValue("");
+      });
 
-        setIsLoading(false);
-      }
-    } else {
-      const newAnswers = [
-        ...answers,
-        {
-          answer: inputValue,
-          questionId: questions[currQuestionIndex].id,
-        },
-      ];
+    handleRequest(problemRequest);
+  };
 
-      if (currQuestionIndex + 1 < questions.length) {
-        setCurrQuestionIndex((prev) => prev + 1);
-        setAnswers(newAnswers);
-      } else {
-        setIsLoading(true);
-        setError("");
-        try {
-          const response = await sendAnswer(newAnswers);
-          if (response.status === "ended") {
-            navigate("/results");
-          }
-          setIsLoading(false);
-          console.log(response);
-          setQuestions(response.questions);
-          setAnswers([]);
-          setCurrQuestionIndex(0);
-        } catch (error: any) {
-          if (error instanceof AxiosError) {
-            setError(error.response?.data.message);
-          }
+  const sendAnswer = () => {
+    const answer = inputValue.trim();
+    const questionId = questions[currQuestionIndex].id;
+    const newAnswers = [...answers, { answer, questionId }];
 
-          setIsLoading(false);
-        }
-      }
+    if (currQuestionIndex + 1 < questions.length) {
+      setCurrQuestionIndex((prevQuestionI) => prevQuestionI + 1);
+      setAnswers(newAnswers);
+      setInputValue("");
+
+      return;
     }
 
-    setInputValue("");
+    const newQuestionsRequest = apiClient
+      .sendAnswer(newAnswers)
+      .then(({ questions, status }) => {
+        if (status === "ended") {
+          navigate("/results");
+        }
+
+        setQuestions(questions);
+        setAnswers([]);
+        setCurrQuestionIndex(0);
+        setInputValue("");
+      });
+
+    handleRequest(newQuestionsRequest);
   };
 
   return (
     <>
       <Header />
-      <div
-        className="flex flex-col consultation-container"
-        style={{ width: "100%" }}
-      >
-        {isLoading ? (
+      <div className="flex flex-col consultation-container w-full">
+        {isLoading && (
           <div className="flex justify-center mb-20">
             <CircularProgress size="lg" />
           </div>
-        ) : isFirstLoaded ? (
+        )}
+
+        {!isLoading && isFirstLoaded && (
           <h1
-            style={{
-              fontWeight: 500,
-              marginBottom: "1.5rem",
-              fontSize: "clamp(1.5rem, 5vw, 3.75rem)",
-              textWrap: "wrap",
-            }}
+            style={{ fontSize: "clamp(1.5rem, 5vw, 3.75rem)" }}
+            className="font-medium mb-6 text-wrap"
           >
             Describe your problem
           </h1>
-        ) : (
-          <Card
-            shadow="none"
-            className="mb-3 bg-zinc-100 pdb-[15px] text-[#000000a4]"
-          >
-            <CardHeader className="pb-0">Question</CardHeader>
-            <CardBody className="pb-8 px-8">
-              <p
-                style={{ fontSize: "clamp(1.25rem, 5vw, 1.875rem)" }}
-                className="text-center"
-              >
-                {questions[currQuestionIndex].text}
-              </p>
-            </CardBody>
-          </Card>
         )}
+
+        {!isLoading && !isFirstLoaded && (
+          <QuestionCard questionText={questions[currQuestionIndex].text} />
+        )}
+
         <InputBar
           errorMessage={`Error: ${error}`}
           isInvalid={!!error}
           classnames="input-bar"
           disabled={isLoading}
-          handleSend={handleSend}
+          onSubmit={isFirstLoaded ? sendProblem : sendAnswer}
           value={inputValue}
           setValue={(value: string) => setInputValue(value)}
         />
