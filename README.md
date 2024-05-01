@@ -35,7 +35,7 @@ The DiAgnosis platform is built using leading technologies:
 Live Preview
 ------------
 
-You can view a live demo of the DiAgnosis application here: [Live Preview](https://softjey.github.io/HACKATHON/).
+You can view a live demo of the DiAgnosis application here: [Live Preview](https://softjey.github.io/DiAIgnosis/).
 
 Project Impact
 --------------
