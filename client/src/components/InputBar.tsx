@@ -2,6 +2,7 @@ import { Textarea } from "@nextui-org/react";
 import React from "react";
 import SendButton from "./buttons/SendButton";
 import MicrophoneButton from "./buttons/MicrophoneButton";
+import SoonAvailablePopover from "./SoonAvailablePopover";
 
 interface Props {
   errorMessage: string;
@@ -22,12 +23,10 @@ const InputBar: React.FC<Props> = ({
   isInvalid,
   errorMessage,
 }) => {
+  const containerClasses = `flex justify-center items-end gap-3 relative ${classnames ?? ""}`;
+
   return (
-    <div
-      className={`flex justify-center items-end gap-3 relative ${
-        classnames ?? ""
-      }`}
-    >
+    <div className={containerClasses}>
       <Textarea
         color={isInvalid ? "danger" : "default"}
         isDisabled={disabled}
@@ -42,7 +41,11 @@ const InputBar: React.FC<Props> = ({
           }
         }}
       />
-      <MicrophoneButton isDisabled={true} />
+
+      <SoonAvailablePopover placement="bottom">
+        <MicrophoneButton />
+      </SoonAvailablePopover>
+
       <SendButton isDisabled={disabled} onClick={onSubmit} />
     </div>
   );

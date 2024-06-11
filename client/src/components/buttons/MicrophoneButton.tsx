@@ -1,9 +1,12 @@
 import { ButtonProps, Button } from "@nextui-org/react";
-import React from "react";
+import { forwardRef } from "react";
 
-const MicrophoneButton: React.FC<ButtonProps> = (props) => {
+const MicrophoneButton = forwardRef<
+  HTMLButtonElement,
+  ButtonProps
+>((props, ref) => {
   return (
-    <Button color="primary" isIconOnly {...props}>
+    <Button color="primary" isIconOnly ref={ref} {...props}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
@@ -15,6 +18,6 @@ const MicrophoneButton: React.FC<ButtonProps> = (props) => {
       </svg>
     </Button>
   );
-};
+});
 
 export default MicrophoneButton;
