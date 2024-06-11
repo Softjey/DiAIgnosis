@@ -14,7 +14,7 @@ export const QuestionCard: React.FC<Props> = ({ questionText }) => {
       <CardBody className="pb-8 px-8">
         <p
           style={{ fontSize: "clamp(1.25rem, 5vw, 1.875rem)" }}
-          className="text-center"
+          className="text-center max-w-[600px]"
         >
           {questionText}
         </p>

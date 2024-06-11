@@ -13,11 +13,11 @@ export const ResultsTable: React.FC<Props> = ({ results }) => {
   
   return (
     <Table
-      topContent={<span>{user?.name ?? ""}:</span>}
+      topContent={<span>{user?.name ?? "Your consultation results"}:</span>}
       aria-label="Results of diagnoses"
       isStriped
       hideHeader
-      className="text-black w-[80vw] text-left results-table"
+      className="text-black text-left results-table"
     >
       <TableHeader>
         <TableColumn>Name</TableColumn>
