@@ -15,7 +15,7 @@ import * as retry from 'async-retry';
 
 @Injectable()
 export class ConsultationService {
-  private gptModel: ChatCompletionCreateParamsBase['model'] = 'gpt-3.5-turbo-0125';
+  private gptModel: ChatCompletionCreateParamsBase['model'] = 'gpt-4o-mini';
   private startPrompt = this.openAiService.systemPrompt(generateStartQuestionsPrompt);
   private continuePrompt = this.openAiService.systemPrompt(generateExtraQuestionsPrompt);
   private resultsPrompt = this.openAiService.systemPrompt(getResultsPrompt);
