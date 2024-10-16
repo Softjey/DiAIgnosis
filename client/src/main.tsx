@@ -1,10 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { NextUIProvider } from "@nextui-org/react";
-import {
-  RouterProvider,
-  createHashRouter as createRouter,
-} from "react-router-dom";
+import { RouterProvider, createHashRouter as createRouter } from "react-router-dom";
 import "./index.css";
 import StartPage from "./pages/StartPage";
 import LoginPage from "./pages/LoginPage";
@@ -26,17 +23,17 @@ const router = createRouter([
   {
     path: "consultation",
     element: (
-      // <Authenticated>
-      <ConsultationPage />
-      /* </Authenticated> */
+      <Authenticated>
+        <ConsultationPage />
+      </Authenticated>
     ),
   },
   {
     path: "results",
     element: (
-      // <Authenticated>
-      <ResultsPage />
-      /* </Authenticated> */
+      <Authenticated>
+        <ResultsPage />
+      </Authenticated>
     ),
   },
   {
