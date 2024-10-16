@@ -18,7 +18,7 @@ const ResultsPage: React.FC = () => {
     return (
       <>
         <Header />
-        <CircularProgress size="lg" />
+        <CircularProgress aria-label="Loading" size="lg" />
       </>
     );
   }
@@ -40,7 +40,9 @@ const ResultsPage: React.FC = () => {
           />
 
           <div className="flex justify-around">
-            <Button as={Link} to="/">Go to home</Button>
+            <Button as={Link} to="/">
+              Go to home
+            </Button>
 
             <SoonAvailablePopover>
               <Button color="success">Send results to the doctor</Button>

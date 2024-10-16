@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { CircularProgress } from "@nextui-org/react";
 import { useState } from "react";
 import * as apiClient from "../api/api";
@@ -61,7 +60,7 @@ const ConsultationPage: React.FC = () => {
       <div className="flex flex-col max-w-none md:max-w-[60vw] w-full">
         {isLoading && (
           <div className="flex justify-center mb-20">
-            <CircularProgress size="lg" />
+            <CircularProgress aria-label="Loading" size="lg" />
           </div>
         )}
 
