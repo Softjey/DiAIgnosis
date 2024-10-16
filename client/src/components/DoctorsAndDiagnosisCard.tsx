@@ -7,10 +7,7 @@ export interface Props {
   initialDoctors: string[];
 }
 
-export const DoctorsAndDiagnosisCard: React.FC<Props> = ({
-  initialDiagnoses,
-  initialDoctors,
-}) => {
+export const DoctorsAndDiagnosisCard: React.FC<Props> = ({ initialDiagnoses, initialDoctors }) => {
   const [diagnoses, setDiagnoses] = useState(initialDiagnoses);
   const [doctors, setDoctors] = useState(initialDoctors);
   const [diagnosisInput, setDiagnosisInput] = useState("");
@@ -21,7 +18,9 @@ export const DoctorsAndDiagnosisCard: React.FC<Props> = ({
       <CardBody className="flex flex-row justify-evenly suggestions-card-body">
         <RadioGroup label="Possible diagnoses">
           {diagnoses.map((diagnosis) => (
-            <Radio value={diagnosis}>{diagnosis}</Radio>
+            <Radio key={diagnosis} value={diagnosis}>
+              {diagnosis}
+            </Radio>
           ))}
 
           <InputGroup
@@ -33,7 +32,9 @@ export const DoctorsAndDiagnosisCard: React.FC<Props> = ({
 
         <RadioGroup label="Doctor suggestions">
           {doctors.map((doctorProfession) => (
-            <Radio value={doctorProfession}>{doctorProfession}</Radio>
+            <Radio key={doctorProfession} value={doctorProfession}>
+              {doctorProfession}
+            </Radio>
           ))}
 
           <InputGroup
