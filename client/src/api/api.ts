@@ -27,10 +27,13 @@ export interface ResultsResponse {
   doctors: string[];
 }
 
-export const getResults = async () => {
+export const getResults = async (signal?: AbortSignal) => {
   const consultationId = localStorage.getItem("consultationId");
   const { data } = await axios.get(
-    `${BASE_URL}/consultation/result?consultationId=${consultationId}`
+    `${BASE_URL}/consultation/result?consultationId=${consultationId}`,
+    {
+      signal,
+    }
   );
   return data as ResultsResponse;
 };

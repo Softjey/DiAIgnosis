@@ -11,7 +11,16 @@ const ResultsPage: React.FC = () => {
   const [results, setResults] = useState<ResultsResponse | null>(null);
 
   useEffect(() => {
-    getResults().then(setResults);
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    getResults(signal).then((res) => {
+      setResults(res);
+    });
+
+    return () => {
+      controller.abort();
+    };
   }, []);
 
   if (!results) {

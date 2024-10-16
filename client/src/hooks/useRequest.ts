@@ -2,11 +2,7 @@ import { useState } from "react";
 
 export type RequestHandler = <T>(promise: Promise<T>) => Promise<T>;
 
-export type Return = [
-  handleRequest: RequestHandler,
-  isLoading: boolean,
-  error: string
-];
+export type Return = [handleRequest: RequestHandler, isLoading: boolean, error: string];
 
 export function useRequest(): Return {
   const [isLoading, setIsLoading] = useState(false);
@@ -25,5 +21,5 @@ export function useRequest(): Return {
       .finally(() => setIsLoading(false));
   }
 
-  return [handleRequest, isLoading, error]
+  return [handleRequest, isLoading, error];
 }
