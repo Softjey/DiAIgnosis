@@ -18,22 +18,31 @@
 }
 
 body {
-  margin: 0;
   display: flex;
   place-items: center;
   min-height: 100vh;
 }
 
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
 @media (max-width: 768px) {
-  .background-img {
-    display: none;
-  }
-
-  .results-table {
-    width: 100%;
-  }
-
-  .suggestions-card-body {
+  body {
+    display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+  }
+
+  #root {
+    margin: unset;
+    display: flex;
+    flex-direction: column;
+    min-width: 300px;
+    padding: clamp(10px, 5vw, 20px);
   }
 }

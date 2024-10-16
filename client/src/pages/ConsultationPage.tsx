@@ -19,13 +19,11 @@ const ConsultationPage: React.FC = () => {
   const navigate = useNavigate();
 
   const sendProblem = () => {
-    const problemRequest = apiClient
-      .startConsultation(inputValue)
-      .then(({ questions }) => {
-        setQuestions(questions);
-        setIsFirstLoaded(false);
-        setInputValue("");
-      });
+    const problemRequest = apiClient.startConsultation(inputValue).then(({ questions }) => {
+      setQuestions(questions);
+      setIsFirstLoaded(false);
+      setInputValue("");
+    });
 
     handleRequest(problemRequest);
   };
@@ -43,18 +41,16 @@ const ConsultationPage: React.FC = () => {
       return;
     }
 
-    const newQuestionsRequest = apiClient
-      .sendAnswer(newAnswers)
-      .then(({ questions, status }) => {
-        if (status === "ended") {
-          navigate("/results");
-        }
+    const newQuestionsRequest = apiClient.sendAnswer(newAnswers).then(({ questions, status }) => {
+      if (status === "ended") {
+        navigate("/results");
+      }
 
-        setQuestions(questions);
-        setAnswers([]);
-        setCurrQuestionIndex(0);
-        setInputValue("");
-      });
+      setQuestions(questions);
+      setAnswers([]);
+      setCurrQuestionIndex(0);
+      setInputValue("");
+    });
 
     handleRequest(newQuestionsRequest);
   };
@@ -62,7 +58,7 @@ const ConsultationPage: React.FC = () => {
   return (
     <>
       <Header />
-      <div className="flex flex-col consultation-container w-full">
+      <div className="flex flex-col max-w-none md:max-w-[60vw] w-full">
         {isLoading && (
           <div className="flex justify-center mb-20">
             <CircularProgress size="lg" />

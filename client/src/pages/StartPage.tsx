@@ -1,5 +1,4 @@
 import { Button } from "@nextui-org/react";
-import "../App.css";
 import { useNavigate } from "react-router-dom";
 import imgUrl from "/img/stock1.jpg";
 import Header from "../components/Header";
@@ -31,7 +30,7 @@ function StartPage() {
           </Button>
         </div>
         <img
-          className="w-[50vw] object-center background-img"
+          className="w-[50vw] object-center hidden md:[display:unset]"
           src={imgUrl}
           alt="medicine"
         />
