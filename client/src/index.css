@@ -17,32 +17,22 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-body {
-  display: flex;
-  place-items: center;
-  min-height: 100vh;
+/* disable default autofill styles */
+
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: none;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
 }
 
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
-@media (max-width: 768px) {
-  body {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: stretch;
-  }
-
-  #root {
-    margin: unset;
-    display: flex;
-    flex-direction: column;
-    min-width: 300px;
-    padding: clamp(10px, 5vw, 20px);
-  }
+input:-moz-autofill,
+textarea:-moz-autofill,
+select:-moz-autofill {
+  transition: background-color 5000s ease-in-out 0s;
+  -moz-text-fill-color: none;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
 }

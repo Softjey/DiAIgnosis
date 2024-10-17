@@ -15,9 +15,7 @@ const LoginPage: React.FC = () => {
 
   const validate = (email: string, password: string) => {
     if (
-      password ===
-      users.find((user) => user.email.toLowerCase() === email.toLowerCase())
-        ?.password
+      password === users.find((user) => user.email.toLowerCase() === email.toLowerCase())?.password
     ) {
       return true;
     }
@@ -26,11 +24,12 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col gap-6 items-center">
+    <form className="flex flex-col gap-6 items-center">
       <h1 className="text-6xl font-medium">Login</h1>
       <div className="flex flex-col w-[300px] flex-wrap md:flex-nowrap gap-3">
         <Input
           type="email"
+          autoComplete="email"
           label="Email"
           value={email}
           onChange={(e) => setEmail(e.currentTarget.value)}
@@ -38,16 +37,16 @@ const LoginPage: React.FC = () => {
         <Input
           type={isPasswordVisible ? "text" : "password"}
           label="Password"
+          autoComplete="current-password"
           isInvalid={isPasswordError}
           errorMessage="Password is incorrect"
           value={password}
           onChange={(e) => setPassword(e.currentTarget.value)}
-          /* onBlur={(e) => {
-            if (e.target.value === "") {
+          onBlur={(e) => {
+            if (e.currentTarget instanceof HTMLInputElement && e.currentTarget.value === "") {
               setIsPasswordError(false);
             }
-            // TODO: later add this feat
-          }} */
+          }}
           endContent={
             <EyeButton
               isClosed={!isPasswordVisible}
@@ -76,7 +75,7 @@ const LoginPage: React.FC = () => {
       >
         Login
       </Button>
-    </div>
+    </form>
   );
 };
 

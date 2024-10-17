@@ -10,6 +10,7 @@ import UserContextProvider from "./store/userContext";
 import Authenticated from "./components/Authenticated";
 import NotFoundPage from "./pages/NotFoundPage";
 import ConsultationPage from "./pages/ConsultationPage";
+import Layout from "./components/Layout";
 
 const router = createRouter([
   {
@@ -46,7 +47,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <NextUIProvider>
       <UserContextProvider>
-        <RouterProvider router={router} />
+        <Layout>
+          <RouterProvider router={router} />
+        </Layout>
       </UserContextProvider>
     </NextUIProvider>
   </React.StrictMode>

@@ -59,16 +59,13 @@ const ConsultationPage: React.FC = () => {
       <Header />
       <div className="flex flex-col max-w-none md:max-w-[60vw] w-full">
         {isLoading && (
-          <div className="flex justify-center mb-20">
+          <div className="flex justify-center mb-16">
             <CircularProgress aria-label="Loading" size="lg" />
           </div>
         )}
 
         {!isLoading && isFirstLoaded && (
-          <h1
-            style={{ fontSize: "clamp(1.5rem, 5vw, 3.75rem)" }}
-            className="font-medium mb-6 text-wrap"
-          >
+          <h1 className="font-medium text-[clamp(1.5rem,_5vw,_3.75rem)] mb-6 text-wrap text-center">
             Describe your problem
           </h1>
         )}
@@ -80,7 +77,6 @@ const ConsultationPage: React.FC = () => {
         <InputBar
           errorMessage={`Error: ${error}`}
           isInvalid={!!error}
-          classnames="input-bar"
           disabled={isLoading}
           onSubmit={isFirstLoaded ? sendProblem : sendAnswer}
           value={inputValue}
