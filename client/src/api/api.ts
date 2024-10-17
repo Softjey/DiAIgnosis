@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { initialQuestion, Answer, AnswerResponse } from "./questions";
 
 const BASE_URL = "https://hackathon-production-ec4e.up.railway.app";
@@ -27,13 +27,11 @@ export interface ResultsResponse {
   doctors: string[];
 }
 
-export const getResults = async (signal?: AbortSignal) => {
+export const getResults = async (config?: AxiosRequestConfig) => {
   const consultationId = localStorage.getItem("consultationId");
   const { data } = await axios.get(
     `${BASE_URL}/consultation/result?consultationId=${consultationId}`,
-    {
-      signal,
-    }
+    config
   );
   return data as ResultsResponse;
 };

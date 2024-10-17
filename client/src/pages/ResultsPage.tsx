@@ -1,25 +1,34 @@
 import { Button, CircularProgress } from "@nextui-org/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ResultsResponse, getResults } from "../api/api";
 import Header from "../components/Header";
 import { DoctorsAndDiagnosisCard } from "../components/DoctorsAndDiagnosisCard";
 import { ResultsTable } from "../components/ResultsTable";
 import SoonAvailablePopover from "../components/SoonAvailablePopover";
 import { Link } from "react-router-dom";
+import axios, { CancelTokenSource } from "axios";
 
 const ResultsPage: React.FC = () => {
   const [results, setResults] = useState<ResultsResponse | null>(null);
 
-  useEffect(() => {
-    const controller = new AbortController();
-    const signal = controller.signal;
+  const cancelTokenRef = useRef<CancelTokenSource | null>(null);
 
-    getResults(signal).then((res) => {
-      setResults(res);
-    });
+  useEffect(() => {
+    cancelTokenRef.current = axios.CancelToken.source();
+    const { token: cancelToken, cancel } = cancelTokenRef.current;
+
+    getResults({ cancelToken })
+      .then((res) => {
+        setResults(res);
+      })
+      .catch((err) => {
+        if (axios.isCancel(err)) {
+          console.log("Operation canceled by the user.");
+        }
+      });
 
     return () => {
-      controller.abort();
+      cancel("Operation canceled by the user.");
     };
   }, []);
 
