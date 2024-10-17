@@ -24,17 +24,19 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <form className="flex flex-col gap-6 items-center">
-      <h1 className="text-6xl font-medium">Login</h1>
-      <div className="flex flex-col w-[300px] flex-wrap md:flex-nowrap gap-3">
+    <form className="flex flex-col items-center">
+      <h1 className="text-6xl font-medium mb-6">Login</h1>
+      <div className="flex flex-col w-60 flex-wrap md:flex-nowrap gap-3 mb-3">
         <Input
           type="email"
+          size="sm"
           autoComplete="email"
           label="Email"
           value={email}
           onChange={(e) => setEmail(e.currentTarget.value)}
         />
         <Input
+          size="sm"
           type={isPasswordVisible ? "text" : "password"}
           label="Password"
           autoComplete="current-password"
@@ -50,12 +52,11 @@ const LoginPage: React.FC = () => {
           endContent={
             <EyeButton
               isClosed={!isPasswordVisible}
-              className="focus:outline-none"
+              className="focus:outline-none h-full"
               type="button"
               onClick={() => setIsPasswordVisible(!isPasswordVisible)}
             />
           }
-          className="max-w-xs"
         />
       </div>
 
@@ -68,9 +69,8 @@ const LoginPage: React.FC = () => {
             setIsPasswordError(true);
           }
         }}
-        className="w-[190px]"
         variant="solid"
-        size="lg"
+        size="md"
         color="primary"
       >
         Login
