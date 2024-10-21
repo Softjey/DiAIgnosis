@@ -6,8 +6,13 @@ export interface User {
 
 export const users: User[] = [
   {
-    name: "Justyna Woroń",
-    email: "justyna.woron@pg.edu.pl",
-    password: "stongP@ss!",
+    name: "Test 1",
+    email: "test1@mail.com",
+    password: "strongP@ss!",
+  },
+  {
+    name: "Test 2",
+    email: "test2@mail.com",
+    password: "secretP@ss!",
   },
 ];
