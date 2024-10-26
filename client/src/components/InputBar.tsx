@@ -1,5 +1,5 @@
 import { Textarea } from "@nextui-org/react";
-import React from "react";
+import { useRef } from "react";
 import SendButton from "./buttons/SendButton";
 import MicrophoneButton from "./buttons/MicrophoneButton";
 import SoonAvailablePopover from "./SoonAvailablePopover";
@@ -23,16 +23,20 @@ const InputBar: React.FC<Props> = ({
   isInvalid,
   errorMessage,
 }) => {
-  const submit = () => {
-    if (value !== "") {
-      onSubmit();
-    } else {
-      console.log("value should not be empty");
-    }
-  };
+  const formRef = useRef<HTMLFormElement>(null);
 
   return (
-    <form className={`flex justify-center items-end gap-3 relative ${classnames ?? ""}`}>
+    <form
+      ref={formRef}
+      onSubmit={() => {
+        if (value !== "") {
+          onSubmit();
+        } else {
+          console.warn("value should not be empty");
+        }
+      }}
+      className={`flex justify-center items-end gap-3 relative ${classnames ?? ""}`}
+    >
       <Textarea
         color={isInvalid ? "danger" : "default"}
         isDisabled={disabled}
@@ -43,7 +47,7 @@ const InputBar: React.FC<Props> = ({
         onKeyDown={(e) => {
           if (e.key === "Enter") {
             e.preventDefault();
-            submit();
+            formRef.current?.requestSubmit();
           }
         }}
       />
@@ -52,7 +56,7 @@ const InputBar: React.FC<Props> = ({
         <MicrophoneButton />
       </SoonAvailablePopover>
 
-      <SendButton onClick={submit} isDisabled={disabled} />
+      <SendButton type="submit" isDisabled={disabled} />
     </form>
   );
 };
