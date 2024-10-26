@@ -32,10 +32,7 @@ const InputBar: React.FC<Props> = ({
   };
 
   return (
-    <form
-      onSubmit={submit}
-      className={`flex justify-center items-end gap-3 relative ${classnames ?? ""}`}
-    >
+    <form className={`flex justify-center items-end gap-3 relative ${classnames ?? ""}`}>
       <Textarea
         color={isInvalid ? "danger" : "default"}
         isDisabled={disabled}
@@ -55,7 +52,7 @@ const InputBar: React.FC<Props> = ({
         <MicrophoneButton />
       </SoonAvailablePopover>
 
-      <SendButton type="submit" isDisabled={disabled} />
+      <SendButton onClick={submit} isDisabled={disabled} />
     </form>
   );
 };
