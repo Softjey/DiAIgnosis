@@ -23,10 +23,19 @@ const InputBar: React.FC<Props> = ({
   isInvalid,
   errorMessage,
 }) => {
-  const containerClasses = `flex justify-center items-end gap-3 relative ${classnames ?? ""}`;
+  const submit = () => {
+    if (value !== "") {
+      onSubmit();
+    } else {
+      console.log("value should not be empty");
+    }
+  };
 
   return (
-    <div className={containerClasses}>
+    <form
+      onSubmit={submit}
+      className={`flex justify-center items-end gap-3 relative ${classnames ?? ""}`}
+    >
       <Textarea
         color={isInvalid ? "danger" : "default"}
         isDisabled={disabled}
@@ -37,7 +46,7 @@ const InputBar: React.FC<Props> = ({
         onKeyDown={(e) => {
           if (e.key === "Enter") {
             e.preventDefault();
-            onSubmit();
+            submit();
           }
         }}
       />
@@ -46,8 +55,8 @@ const InputBar: React.FC<Props> = ({
         <MicrophoneButton />
       </SoonAvailablePopover>
 
-      <SendButton isDisabled={disabled} onClick={onSubmit} />
-    </div>
+      <SendButton type="submit" isDisabled={disabled} />
+    </form>
   );
 };
 
